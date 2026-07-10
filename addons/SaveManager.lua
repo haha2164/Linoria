@@ -301,7 +301,7 @@ local SaveManager = {} do
 			end
 
             self.Library:Notify('Reset autoload to none')
-            self.AutoloadLabel:SetText('Current Autoload: N/A')
+            self.AutoloadLabel:SetText('Current Autoload - N/A')
         end)
 
 		SaveManager.AutoloadLabel = section:AddLabel('Current Autoload - N/A', true)
