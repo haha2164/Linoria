@@ -285,18 +285,23 @@ local SaveManager = {} do
 
 		section:AddButton('Set Autoload', function()
 			local name = self.Library.Options.SaveManager_ConfigList.Value
+
+			local success, err = self:Save(name)
+			if not success then
+				return self.Library:Notify('Failed to set config as autoload: ' .. err)
+			end
+
 			writefile(self.Folder .. '/settings/autoload.txt', name)
 			SaveManager.AutoloadLabel:SetText('Current Autoload - ' .. name)
-			self.Library:Notify(string.format('Set %q to auto load', name))
-		end):AddButton('Reset autoload', function()
-            local success, err = self:DeleteAutoLoadConfig()
-            if not success then
-                self.Library:Notify('Failed to set autoload config: ' .. err)
-                return
-            end
+			self.Library:Notify(string.format('Set %q to autoload', name))
+		end):AddButton('Reset Autoload', function()
+            if isfile(self.Folder .. '/settings/autoload.txt') then
+				delfile(self.Folder .. '/settings/autoload.txt')
+				SaveManager.AutoloadLabel:SetText("Current Autoload - N/A")
+			end
 
-            self.Library:Notify('Set autoload to none')
-            self.AutoloadConfigLabel:SetText('Current Autoload: N/A')
+            self.Library:Notify('Reset autoload to none')
+            self.AutoloadLabel:SetText('Current Autoload: N/A')
         end)
 
 		SaveManager.AutoloadLabel = section:AddLabel('Current Autoload - N/A', true)
