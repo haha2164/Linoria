@@ -249,7 +249,7 @@ local SaveManager = {} do
 			if isfile(self.Folder .. '/settings/autoload.txt') and readfile(self.Folder .. '/settings/autoload.txt') == name then
 				delfile(self.Folder .. '/settings/autoload.txt')
 			
-				SaveManager.AutoloadLabel:SetText("Current Autoload - N/A")
+				SaveManager.AutoloadLabel:SetText("Current Autoload - None")
 			end
 
             self.Library:Notify(string.format('Deleted config %q', name))
@@ -297,14 +297,14 @@ local SaveManager = {} do
 		end):AddButton('Reset Autoload', function()
             if isfile(self.Folder .. '/settings/autoload.txt') then
 				delfile(self.Folder .. '/settings/autoload.txt')
-				SaveManager.AutoloadLabel:SetText("Current Autoload - N/A")
+				SaveManager.AutoloadLabel:SetText("Current Autoload - None")
 			end
 
             self.Library:Notify('Reset autoload to none')
-            self.AutoloadLabel:SetText('Current Autoload - N/A')
+            self.AutoloadLabel:SetText('Current Autoload - None')
         end)
 
-		SaveManager.AutoloadLabel = section:AddLabel('Current Autoload - N/A', true)
+		SaveManager.AutoloadLabel = section:AddLabel('Current Autoload - None', true)
 
 		if isfile(self.Folder .. '/settings/autoload.txt') then
 			local name = readfile(self.Folder .. '/settings/autoload.txt')
