@@ -18,8 +18,9 @@ local Mouse = cloneref(Players.LocalPlayer:GetMouse());
 
 local ScreenGui = Instance.new('ScreenGui'); do
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
+    ScreenGui.DisplayOrder = 1000;
     ScreenGui.Parent = gethui and gethui() or Services.CoreGui;
-end
+end;
 
 local Library = {
     Toggles = {};
