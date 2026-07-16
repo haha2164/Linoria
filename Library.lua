@@ -36,7 +36,7 @@ local Library = {
     BackgroundColor = Color3.fromRGB(20, 20, 20);
     AccentColor = Color3.fromRGB(159, 98, 54);
     OutlineColor = Color3.fromRGB(50, 50, 50);
-    RiskColor = Color3.fromRGB(255, 50, 50),
+    RiskColor = Color3.fromRGB(255, 50, 50);
 
     Black = Color3.new(0, 0, 0);
     Font = Enum.Font.BuilderSansExtraBold;
@@ -59,7 +59,7 @@ local function GetAsset(Name, Id)
 
             if not isfile('LinoriaSettings/assets/' .. Name .. '.png') then
                 writefile('LinoriaSettings/assets/' .. Name .. '.png', game:HttpGet(Repo .. 'assets/' .. Name .. '.png'));
-            end
+            end;
         end;
 
         Asset = getcustomasset('LinoriaSettings/assets/' .. Name .. '.png');
