@@ -1,17 +1,18 @@
+
 local cloneref = cloneref or clonereference or function(i) return i end
 
-local Services = setmetatable({}, {__index = function(_, i)
+local services = setmetatable({}, { __index = function(_, i)
     return cloneref(game.FindService(game, i))
 end})
 
 local Repo = 'https://raw.githubusercontent.com/haha2164/Linoria/main/'
 
-local InputService = Services.UserInputService;
-local TextService = Services.TextService;
-local Teams = Services.Teams;
-local Players = Services.Players;
-local RunService = Services.RunService;
-local TweenService = Services.TweenService;
+local InputService = services.UserInputService;
+local TextService = services.TextService;
+local Teams = services.Teams;
+local Players = services.Players;
+local RunService = services.RunService;
+local TweenService = services.TweenService;
 
 local PreRender = RunService.PreRender;
 local Mouse = cloneref(Players.LocalPlayer:GetMouse());
@@ -19,7 +20,7 @@ local Mouse = cloneref(Players.LocalPlayer:GetMouse());
 local ScreenGui = Instance.new('ScreenGui'); do
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
     ScreenGui.DisplayOrder = 1000;
-    ScreenGui.Parent = gethui and gethui() or Services.CoreGui;
+    ScreenGui.Parent = gethui and gethui() or services.CoreGui;
 end;
 
 local Library = {
