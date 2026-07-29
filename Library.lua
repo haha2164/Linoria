@@ -60,6 +60,9 @@ local Library = {
         Slash = '/';
         BackSlash = '\\';
 
+        Quote = '\'';
+        Backquote = '`';
+        
         Minus = '-';
         Equals = '=';
 
