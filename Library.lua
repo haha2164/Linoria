@@ -1903,7 +1903,7 @@ do
 
         local ToggleRegion = Library:Create('Frame', {
             BackgroundTransparency = 1;
-            Size = UDim2.new(1, ToggleLabel.TextBounds.X + 10, 1, 0);
+            Size = UDim2.new(1, math.max(ToggleLabel.TextBounds.X + 10, 30), 1, 0);
             ZIndex = 8;
             Parent = ToggleOuter;
         });
