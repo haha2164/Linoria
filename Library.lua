@@ -42,12 +42,69 @@ local Library = {
     Black = Color3.new(0, 0, 0);
     Font = Enum.Font.BuilderSansExtraBold;
 
+    Keys = {
+        One = '1';
+        Two = '2';
+        Three = '3';
+        Four = '4';
+        Five = '5';
+        Six = '6';
+        Seven = '7';
+        Eight = '8';
+        Nine = '9';
+        Zero = '0';
+
+        Semicolon = ';';
+        Comma = ',';
+        Period = '.';
+        Slash = '/';
+        BackSlash = '\\';
+
+        Minus = '-';
+        Equals = '=';
+
+        LeftShift = 'L-SHIFT';
+        RightShift = 'R-SHIFT';
+
+        LeftControl = 'L-CTRL';
+        RightControl = 'R-CTRL';
+
+        LeftAlt = 'L-ALT';
+        RightAlt = 'R-ALT';
+
+        RightBracket = ']';
+        LeftBracket = '[';
+
+        Return = 'Enter';
+
+        CapsLock = 'Caps';
+        Tab = 'Tab';
+
+        Insert = 'Ins';
+        Delete = 'Del';
+
+        Home = 'Home';
+        End = 'End';
+
+        PageUp = 'PgUp';
+        PageDown = 'PgDn';
+
+        Up = '↑';
+        Down = '↓';
+        Left = '←';
+        Right = '→';
+    };
+
     OpenedFrames = {};
     DependencyBoxes = {};
 
     Signals = {};
     ScreenGui = ScreenGui;
 };
+
+local function GetKeyDisplay(Index)
+    return Library.Keys[Index] or Index;
+end;
 
 local function GetAsset(Name, Id)
     local Asset;
@@ -1010,10 +1067,10 @@ do
         local ToggleLabel = self.TextLabel;
         local Container = self.Container;
 
-        assert(Info.Default, 'AddKeyPicker: Missing default value.');
+        -- assert(Info.Default, 'AddKeyPicker: Missing default value.');
 
         local KeyPicker = {
-            Value = Info.Default ~= 'None' and Info.Default or 'None';
+            Value = Info.Default;
             Toggled = false;
             Mode = Info.Mode or 'Toggle'; -- Always, Toggle, Hold
             Type = 'KeyPicker';
@@ -1053,11 +1110,17 @@ do
         local DisplayLabel = Library:CreateLabel({
             Size = UDim2.new(1, 0, 1, 0);
             TextSize = 13;
-            Text = KeyPicker.Value ~= 'None' and Info.Default or '...';
-            TextWrapped = true;
+            Text = KeyPicker.Value and GetKeyDisplay(KeyPicker.Value) or '...';
+            TextWrapped = false;
             ZIndex = 8;
             Parent = PickInner;
         });
+
+        DisplayLabel:GetPropertyChangedSignal('Text'):Connect(function()
+            PickOuter.Size = UDim2.new(0, math.clamp(DisplayLabel.TextBounds.X + 12, 28, 60), 0, 15);
+        end);
+
+        PickOuter.Size = UDim2.new(0, math.clamp(DisplayLabel.TextBounds.X + 12, 28, 60), 0, 15);
 
         local ModeSelectOuter = Library:Create('Frame', {
             BorderColor3 = Color3.new(0, 0, 0);
@@ -1099,7 +1162,7 @@ do
             Visible = false;
             ZIndex = 110;
             Parent = Library.KeybindContainer;
-        },  true);
+        }, true);
 
         local Modes = Info.Modes or { 'Always', 'Toggle', 'Hold' };
         local ModeButtons = {};
@@ -1157,9 +1220,8 @@ do
 
             local State = KeyPicker:GetState();
 
-            ContainerLabel.Text = string.format('[%s] %s - (%s)', KeyPicker.Value, Info.Text, KeyPicker.Mode);
-
-            ContainerLabel.Visible = KeyPicker.Value ~= 'None' and true or false;
+            ContainerLabel.Text = string.format('[%s] %s - (%s)', KeyPicker.Value and GetKeyDisplay(KeyPicker.Value) or '', Info.Text, KeyPicker.Mode);
+            ContainerLabel.Visible = KeyPicker.Value and true or false;
             ContainerLabel.TextColor3 = State and Library.AccentColor or Library.FontColor;
 
             Library.RegistryMap[ContainerLabel].Properties.TextColor3 = State and 'AccentColor' or 'FontColor';
@@ -1176,14 +1238,14 @@ do
                 end;
             end;
 
-            Library.KeybindFrame.Size = UDim2.new(0, math.max(XSize + 12, 210), 0, YSize + 24)
+            Library.KeybindFrame.Size = UDim2.new(0, math.max(XSize + 14, 210), 0, YSize + 24)
         end;
 
         function KeyPicker:GetState()
             if KeyPicker.Mode == 'Always' then
                 return true;
             elseif KeyPicker.Mode == 'Hold' then
-                if KeyPicker.Value == 'None' then
+                if not KeyPicker.Value then
                     return false;
                 end
 
@@ -1202,13 +1264,13 @@ do
 
         function KeyPicker:SetValue(Data)
             local Key, Mode = Data[1], Data[2];
-            
-            DisplayLabel.Text = Key == "None" and "..." or Key;
+
+            DisplayLabel.Text = Key and GetKeyDisplay(Key) or '...' 
             KeyPicker.Value = Key;
-            
+
             ModeButtons[Mode]:Select();
             KeyPicker:Update();
-        end;
+        end
 
         function KeyPicker:OnClick(Callback)
             KeyPicker.Clicked = Callback
@@ -1265,7 +1327,7 @@ do
                         Picking = false;
 
                         DisplayLabel.Text = '...';
-                        KeyPicker.Value = 'None'
+                        KeyPicker.Value = nil
 
                         Library:SafeCallback(KeyPicker.ChangedCallback, Input.KeyCode or Input.UserInputType)
                         Library:SafeCallback(KeyPicker.Changed, Input.KeyCode or Input.UserInputType)
@@ -1292,7 +1354,7 @@ do
                     Break = true;
                     Picking = false;
 
-                    DisplayLabel.Text = Key;
+                    DisplayLabel.Text = GetKeyDisplay(Key)
                     KeyPicker.Value = Key;
 
                     Library:SafeCallback(KeyPicker.ChangedCallback, Input.KeyCode or Input.UserInputType)
