@@ -3629,7 +3629,7 @@ function Library:CreateWindow(...)
         Toggled = (not Toggled);
         ModalElement.Modal = Toggled;
 
-        --[[if Toggled then
+        if Toggled then
             -- A bit scuffed, but if we're going from not toggled -> toggled we want to show the frame immediately so that the fade is visible.
             Outer.Visible = true;
 
@@ -3671,7 +3671,7 @@ function Library:CreateWindow(...)
                 Cursor:Remove();
                 CursorOutline:Remove();
             end);
-        end;--]]
+        end;
 
         for _, Desc in next, Outer:GetDescendants() do
             local Properties = {};
